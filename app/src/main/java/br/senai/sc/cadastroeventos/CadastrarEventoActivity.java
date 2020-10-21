@@ -33,8 +33,8 @@ public class CadastrarEventoActivity extends AppCompatActivity implements DatePi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_evento);
-        setTitle("Cadastro de Produto");
-        carregarProduto();
+        setTitle("Cadastro de Evento");
+        carregarEvento();
 
         Button btn_data = (Button) findViewById(R.id.btn_data);
         btn_data.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +58,7 @@ public class CadastrarEventoActivity extends AppCompatActivity implements DatePi
         show_data.setText(valorData);
     }
 
-    private void carregarProduto() {
+    private void carregarEvento() {
         Intent intent = getIntent();
         if (intent != null && intent.getExtras() != null &&
                 intent.getExtras().get("eventoEdicao") != null) {
@@ -125,7 +125,7 @@ public class CadastrarEventoActivity extends AppCompatActivity implements DatePi
             setResult(RESULT_CODE_EVENTO_EXCLUIDO, intent);
             finish();
         } else {
-            Toast.makeText(CadastrarEventoActivity.this, "Não há produto para ser excluído", Toast.LENGTH_LONG).show();
+            Toast.makeText(CadastrarEventoActivity.this, "Não há evento para ser excluído", Toast.LENGTH_LONG).show();
         }
     }
 }
