@@ -53,7 +53,7 @@ public class CadastrarEventoActivity extends AppCompatActivity implements DatePi
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-        valorData = DateFormat.getDateInstance().format(c.getTime());
+        String valorData = DateFormat.getDateInstance().format(c.getTime());
         TextView show_data = (TextView) findViewById(R.id.show_data);
         show_data.setText(valorData);
     }
@@ -83,18 +83,33 @@ public class CadastrarEventoActivity extends AppCompatActivity implements DatePi
     public void onClickSalvar(View v) {
         EditText editTextNome = findViewById(R.id.field_nome);
         EditText editTextLocal = findViewById(R.id.field_local);
+        TextView textViewData = findViewById(R.id.show_data);
 
         String nome = editTextNome.getText().toString();
-        String data = valorData;
+        String data = textViewData.getText().toString();
         String local = editTextLocal.getText().toString();
 
         Intent intent = new Intent();
         Evento evento = new Evento(id, nome, data, local);
 
+        if (nome.equals("")) {
+            Toast.makeText(CadastrarEventoActivity.this, "O campo NOME é obrigatório", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (data.equals("")) {
+            Toast.makeText(CadastrarEventoActivity.this, "O campo DATA é obrigatório", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (local.equals("")) {
+            Toast.makeText(CadastrarEventoActivity.this, "O campo LOCAL é obrigatório", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (edicao) {
             intent.putExtra("eventoEditado", evento);
             setResult(RESULT_CODE_EVENTO_EDITADO, intent);
-            Toast.makeText(CadastrarEventoActivity.this, valorData, Toast.LENGTH_LONG);
         } else {
             intent.putExtra("novoEvento", evento);
             setResult(RESULT_CODE_NOVO_EVENTO, intent);

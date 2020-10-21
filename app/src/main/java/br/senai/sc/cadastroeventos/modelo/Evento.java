@@ -51,6 +51,6 @@ public class Evento implements Serializable {
 
     @Override
     public String toString() {
-        return nome + " - " + data_evento;
+        return nome + " - " + data_evento + " - " + local;
     }
 }
