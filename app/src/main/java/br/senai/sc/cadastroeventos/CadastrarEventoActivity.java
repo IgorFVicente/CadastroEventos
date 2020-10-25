@@ -16,18 +16,13 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.util.Calendar;
 
+import br.senai.sc.cadastroeventos.database.EventoDAO;
 import br.senai.sc.cadastroeventos.modelo.DatePickerFragment;
 import br.senai.sc.cadastroeventos.modelo.Evento;
 
 public class CadastrarEventoActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    private final int RESULT_CODE_NOVO_EVENTO = 10;
-    private final int RESULT_CODE_EVENTO_EDITADO = 11;
-    private final int RESULT_CODE_EVENTO_EXCLUIDO = 12;
-
-    private boolean edicao = false;
     private int id = 0;
-    private String valorData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +60,11 @@ public class CadastrarEventoActivity extends AppCompatActivity implements DatePi
             Evento evento = (Evento) intent.getExtras().get("eventoEdicao");
             EditText editTextNome = findViewById(R.id.field_nome);
             TextView textViewData = findViewById(R.id.show_data);
-            EditText editTextLocal = findViewById(R.id.field_local);
+            EditText editTextValor = findViewById(R.id.field_local);
 
-
-            textViewData.setText(evento.getData());
             editTextNome.setText(evento.getNome());
-            editTextLocal.setText(evento.getLocal());
-            edicao = true;
+            textViewData.setText(evento.getData());
+            editTextValor.setText(String.valueOf(evento.getLocal()));
             id = evento.getId();
         }
     }
@@ -82,15 +75,12 @@ public class CadastrarEventoActivity extends AppCompatActivity implements DatePi
 
     public void onClickSalvar(View v) {
         EditText editTextNome = findViewById(R.id.field_nome);
-        EditText editTextLocal = findViewById(R.id.field_local);
+        EditText editTextValor = findViewById(R.id.field_local);
         TextView textViewData = findViewById(R.id.show_data);
 
         String nome = editTextNome.getText().toString();
         String data = textViewData.getText().toString();
-        String local = editTextLocal.getText().toString();
-
-        Intent intent = new Intent();
-        Evento evento = new Evento(id, nome, data, local);
+        String local = editTextValor.getText().toString();
 
         if (nome.equals("")) {
             Toast.makeText(CadastrarEventoActivity.this, "O campo NOME é obrigatório", Toast.LENGTH_LONG).show();
@@ -107,25 +97,23 @@ public class CadastrarEventoActivity extends AppCompatActivity implements DatePi
             return;
         }
 
-        if (edicao) {
-            intent.putExtra("eventoEditado", evento);
-            setResult(RESULT_CODE_EVENTO_EDITADO, intent);
+        Evento evento = new Evento(id, nome, data, local);
+        EventoDAO eventoDao = new EventoDAO(getBaseContext());
+        boolean salvou = eventoDao.salvar(evento);
+        if (salvou) {
+            finish();
         } else {
-            intent.putExtra("novoEvento", evento);
-            setResult(RESULT_CODE_NOVO_EVENTO, intent);
+            Toast.makeText(CadastrarEventoActivity.this, "Erro ao salvar", Toast.LENGTH_LONG).show();
         }
-
-        finish();
     }
 
     public void onClickExcluir(View v) {
-        if (edicao) {
-            Intent intent = new Intent();
-            intent.putExtra("eventoExcluido", id);
-            setResult(RESULT_CODE_EVENTO_EXCLUIDO, intent);
+        EventoDAO eventoDao = new EventoDAO(getBaseContext());
+        boolean excluiu = eventoDao.excluir(id);
+        if (excluiu) {
             finish();
         } else {
-            Toast.makeText(CadastrarEventoActivity.this, "Não há evento para ser excluído", Toast.LENGTH_LONG).show();
+            Toast.makeText(CadastrarEventoActivity.this, "Erro ao excluir", Toast.LENGTH_LONG).show();
         }
     }
 }
