@@ -62,7 +62,9 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("eventoEdicao", eventoClicado);
             startActivity(intent);
         } else if (item.getTitle() == "Excluir") {
+            EventoDAO eventoDao = new EventoDAO(getBaseContext());
             adapterEventos.remove(eventoClicado);
+            return eventoDao.excluir(eventoClicado.getId());
         }
         return true;
     }
@@ -82,5 +84,11 @@ public class MainActivity extends AppCompatActivity {
     public void onClickNovoEvento(View v) {
         Intent intent = new Intent(MainActivity.this, CadastrarEventoActivity.class);
         startActivity(intent);
+    }
+
+    public void onClickLocal(View v) {
+        Intent intent = new Intent(MainActivity.this, ListarLocalActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

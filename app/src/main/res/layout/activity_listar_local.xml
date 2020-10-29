@@ -3,26 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".MainActivity" >
+    tools:context=".ListarLocalActivity">
 
     <ListView
-        android:id="@+id/list_view_eventos"
+        android:id="@+id/list_view_local"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/btn_novo"
+        android:id="@+id/btn_novo_local"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onClickNovoEvento"
-        android:text="Novo Evento" />
+        android:layout_height="match_parent"
+        android:onClick="onClickNovoLocal"
+        android:text="Novo local" />
 
     <Button
-        android:id="@+id/btn_local"
+        android:id="@+id/btn_eventos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onClickLocal"
-        android:text="Locais" />
+        android:onClick="onClickEventos"
+        android:text="Eventos" />
 </LinearLayout>
