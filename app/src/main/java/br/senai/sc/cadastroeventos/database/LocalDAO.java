@@ -63,4 +63,17 @@ public class LocalDAO {
         cursor.close();
         return locais;
     }
+
+    public List<String> listarCidades() {
+        List<String> cidades = new ArrayList<>();
+        cidades.add("Escolha a cidade");
+        String query = "SELECT DISTINCT cidade FROM " + LocalEntity.TABLE_NAME;
+        Cursor cursor = dbGateway.getDatabase().rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            String cidade = cursor.getString(cursor.getColumnIndex(LocalEntity.COLUMN_NAME_CIDADE));
+            cidades.add(cidade);
+        }
+        cursor.close();
+        return cidades;
+    }
 }
