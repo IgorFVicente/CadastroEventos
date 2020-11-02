@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.senai.sc.cadastroeventos.database.EventoDAO;
@@ -25,7 +26,12 @@ public class ListarLocalActivity extends AppCompatActivity {
     public ListView listViewLocal;
     private ArrayAdapter<Local> adapterLocal;
     private EventoDAO eventoDao = new EventoDAO(getBaseContext());
-    private List<Evento> eventos = eventoDao.listar();
+    private List<String> listaQuery = new ArrayList<String>() {{
+        add("");
+        add("");
+        add("ASC");
+    }};
+    private List<Evento> eventos = eventoDao.listar(listaQuery);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

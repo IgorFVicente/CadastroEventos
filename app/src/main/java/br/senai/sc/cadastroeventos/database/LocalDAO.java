@@ -66,7 +66,7 @@ public class LocalDAO {
 
     public List<String> listarCidades() {
         List<String> cidades = new ArrayList<>();
-        cidades.add("Escolha a cidade");
+        cidades.add("Todas");
         String query = "SELECT DISTINCT cidade FROM " + LocalEntity.TABLE_NAME;
         Cursor cursor = dbGateway.getDatabase().rawQuery(query, null);
         while (cursor.moveToNext()) {

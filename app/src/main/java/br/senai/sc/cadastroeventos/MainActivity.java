@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.senai.sc.cadastroeventos.database.EventoDAO;
 import br.senai.sc.cadastroeventos.database.LocalDAO;
@@ -33,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextPesquisa;
     private Spinner spinnerCidade;
     private ArrayAdapter<String> adapterCidades;
+    private List<String> listaQuery = new ArrayList<String>() {{
+        add("");
+        add("");
+        add("ASC");
+    }};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +56,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String query = s.toString();
+                listaQuery.set(0, query);
                 EventoDAO eventoDao = new EventoDAO(getBaseContext());
                 adapterEventos = new ArrayAdapter<Evento>(MainActivity.this,
                         android.R.layout.simple_list_item_1,
-                        eventoDao.filtrarNomeEvento(query));
+                        eventoDao.listar(listaQuery));
                 listViewEventos.setAdapter(adapterEventos);
             }
 
@@ -65,14 +72,17 @@ public class MainActivity extends AppCompatActivity {
         spinnerCidade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (!spinnerCidade.getSelectedItem().toString().equals("Escolha a cidade")) {
-                    String query = spinnerCidade.getSelectedItem().toString();
-                    EventoDAO eventoDao = new EventoDAO(getBaseContext());
-                    adapterEventos = new ArrayAdapter<Evento>(MainActivity.this,
-                            android.R.layout.simple_list_item_1,
-                            eventoDao.filtrarCidade(query));
-                    listViewEventos.setAdapter(adapterEventos);
+                String query = spinnerCidade.getSelectedItem().toString();
+                if (!query.equals("Todas")) {
+                    listaQuery.set(1, query);
+                } else {
+                    listaQuery.set(1, "");
                 }
+                EventoDAO eventoDao = new EventoDAO(getBaseContext());
+                adapterEventos = new ArrayAdapter<Evento>(MainActivity.this,
+                        android.R.layout.simple_list_item_1,
+                        eventoDao.listar(listaQuery));
+                listViewEventos.setAdapter(adapterEventos);
             }
 
             @Override
@@ -92,23 +102,25 @@ public class MainActivity extends AppCompatActivity {
         EventoDAO eventoDao = new EventoDAO(getBaseContext());
         adapterEventos = new ArrayAdapter<Evento>(MainActivity.this,
                 android.R.layout.simple_list_item_1,
-                eventoDao.listar());
+                eventoDao.listar(listaQuery));
         listViewEventos.setAdapter(adapterEventos);
     }
 
     public void onClickDescendente(View v) {
+        listaQuery.set(2, "DESC");
         EventoDAO eventoDao = new EventoDAO(getBaseContext());
         adapterEventos = new ArrayAdapter<Evento>(MainActivity.this,
                 android.R.layout.simple_list_item_1,
-                eventoDao.listarDescendente());
+                eventoDao.listar(listaQuery));
         listViewEventos.setAdapter(adapterEventos);
     }
 
     public void onClickAscendente(View v) {
+        listaQuery.set(2, "ASC");
         EventoDAO eventoDao = new EventoDAO(getBaseContext());
         adapterEventos = new ArrayAdapter<Evento>(MainActivity.this,
                 android.R.layout.simple_list_item_1,
-                eventoDao.listarAscendente());
+                eventoDao.listar(listaQuery));
         listViewEventos.setAdapter(adapterEventos);
     }
 

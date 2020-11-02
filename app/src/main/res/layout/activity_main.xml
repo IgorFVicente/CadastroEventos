@@ -11,7 +11,7 @@
         android:id="@+id/textView_pesquisa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pesquisar" />
+        android:text="NOME:" />
 
     <EditText
         android:id="@+id/editText_pesquisa_nome"
@@ -20,6 +20,12 @@
         android:ems="10"
         android:hint="Nome do Evento"
         android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CIDADE:" />
 
     <Spinner
         android:id="@+id/spinner_cidade"
